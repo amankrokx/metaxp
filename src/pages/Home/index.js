@@ -1,5 +1,8 @@
 import { Button, Divider, useMediaQuery, TextField, InputAdornment, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import LoaderUtils from "../../components/Loader/LoaderUtils"
+import SnackbarUtils from "../../components/SnackbarUtils"
+import { createGame } from "../../firebase/database"
 // import AskName from "../../components/AskName"
 const AskName = React.lazy(() => import("../../components/AskName"))
 
@@ -12,9 +15,18 @@ function Home() {
     const joinCode = React.useRef()
 
     useEffect(() => {
+        if (window.location.hash.length === 7) SnackbarUtils.toast("Set Name to join game .")
         const n = window.localStorage.getItem("name")
         const u = window.localStorage.getItem("uuid")
         if (n && u && u.length > 0 && n.length > 0) {
+            if (window.location.hash.length > 1) {
+                if (window.location.hash === '#notExists')SnackbarUtils.error("The party does not exists !")
+                else if (window.location.hash === '#finished')SnackbarUtils.info("The party is Over !")
+                else if (window.location.hash.length === 7) {
+                    window.location.href = "/game/" + window.location.hash.substring(1)
+                    return
+                }
+            }
             setName(n)
             setUuid(u)
         }
@@ -46,7 +58,23 @@ function Home() {
                     justifyContent: "center",
                 }}
             >
-                <Button variant="contained" style={{ width: matches ? "40%" : 300 }}>
+                <Button
+                    variant="contained"
+                    style={{ width: matches ? "40%" : 300 }}
+                    onClick={() => {
+                        LoaderUtils.open()
+                        createGame()
+                            .then(id => {
+                                console.log(id)
+                                window.location.href = "/game/" + id
+                                LoaderUtils.close()
+                            })
+                            .catch(err => {
+                                LoaderUtils.close()
+                                SnackbarUtils.error(err.message ? err.message : "Something went wrong !")
+                            })
+                    }}
+                >
                     Create Game
                 </Button>
                 <Divider orientation={matches ? "vertical" : "horizontal"} style={{ padding: 10 }}></Divider>
@@ -54,11 +82,11 @@ function Home() {
                     style={{ width: matches ? "40%" : 300 }}
                     label="Join Game"
                     inputRef={joinCode}
-                    type="number"
+                    type="text"
                     placeholder="Enter Code"
                     InputProps={{
                         onKeyDown: e => {
-                            if (e.key === "Enter") joinGame()
+                            if (e.key === "Enter") window.location.href = "/game/" + joinCode.current.value
                         },
                         startAdornment: (
                             <InputAdornment position="start">
@@ -67,8 +95,13 @@ function Home() {
                         ),
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton aria-label="Subscribe" onClick={joinGame}>
-                                    <span className="material-icons" aria-label="subscribe" edge="end">
+                                <IconButton
+                                    aria-label="Join Game"
+                                    onClick={() => {
+                                        window.location.href = "/game/" + joinCode.current.value
+                                    }}
+                                >
+                                    <span className="material-icons" aria-label="Join" edge="end">
                                         login
                                     </span>
                                 </IconButton>

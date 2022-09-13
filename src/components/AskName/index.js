@@ -16,7 +16,7 @@ export default function AskName(props) {
     }
 
     React.useEffect(() => {
-        const n = window.localStorage.getItem("name")
+        // const n = window.localStorage.getItem("name")
         // if (n && n.length > 0) inpref.current.value = n
     }, [])
 

@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app"
 const firebaseConfig = {
     apiKey: "AIzaSyBf6VVQk0Gj-eHmVhfxLBpYd15pZ_7k5l8",
     authDomain: "metaxp-2d31a.firebaseapp.com",
+    databaseURL: "https://metaxp-2d31a-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "metaxp-2d31a",
     storageBucket: "metaxp-2d31a.appspot.com",
     messagingSenderId: "143770099827",

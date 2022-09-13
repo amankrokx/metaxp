@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton"
 import { SnackbarProvider } from "notistack"
 import Snack from "./components/Snack"
 import Loader from "./components/Loader"
-
+const Game = React.lazy(() => import("./pages/Game"))
 
 function App(props) {
     const [loggedIn, setLoggedIn] = useState(true)
@@ -39,6 +39,7 @@ function App(props) {
                 <Toolbar></Toolbar>
                 <Routes>
                     <Route exact path="/" element={<Home />} />
+                    <Route exact path="/game/*" element={<Game />} />
                     <Route exact path="/but" element={<Button variant="contained">But</Button>} />
                 </Routes>
             </div>
