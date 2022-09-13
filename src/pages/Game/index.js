@@ -72,11 +72,15 @@ function Game (props) {
                 }
                 if (!mePresent && noPlayers < 5) {
                     // register myself
-                    register(paths[paths.length - 1]).then(s => LoaderUtils.close()).catch(err => {
+                    register(paths[paths.length - 1]).then(s => {
+                        LoaderUtils.close()
+                        // window.location.reload()
+                        if (!meSelected) setCanChoose(true)
+                    }).catch(err => {
                         SnackbarUtils.error(err)
                     })
                 }
-                if (!meSelected && noPlayers < 5 && mePresent) {
+                else if (!meSelected && noPlayers < 5 && mePresent) {
                     LoaderUtils.close()
                     setCanChoose(true)
                 } else setCanChoose(false)
@@ -118,8 +122,12 @@ function Game (props) {
         <div>
             <div>
                 <br></br>
-                <div>
-
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    flexWrap: 'wrap',
+                    alignItems: 'center'
+                }}>
                     <Typography variant="h4" color="initial" style={{ margin: 20, display: "inline" }}>
                         Choose a card
                     </Typography>
@@ -187,6 +195,7 @@ function Game (props) {
                         </div>
                     ))}
                 </div>
+                <br ></br>
                 <center>
                     {finished ? (
                         <Button
