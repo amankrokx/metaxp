@@ -1,0 +1,41 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "functions": {
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ]
+  },
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 5000
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 3001
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
